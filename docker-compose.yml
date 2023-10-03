@@ -1,0 +1,49 @@
+services:
+  ums-frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    networks:
+      - ums-user-facing
+  ums-backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+    networks:
+      - ums-user-facing
+      - ums-back-office
+    environment:
+      UMS_DB_NAME: ums 
+      UMS_DB_USERNAME: dev 
+      UMS_DB_PASSWORD: devpass 
+      UMS_DB_IP: db
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: ums
+      MARIADB_USER: dev
+      MARIADB_PASSWORD: devpass 
+      MARIADB_ROOT_PASSWORD: mypass
+    networks:
+      - ums-back-office
+    volumes:
+      - db-data:/var/lib/mysql
+  proxy:
+    image: nginx:1.21
+    ports:
+      - "8080:80"
+    networks:
+      - ums-user-facing
+    depends_on:
+      - ums-frontend
+      - ums-backend
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+networks:
+  ums-user-facing:
+  ums-back-office:
+volumes:
+  db-data:
