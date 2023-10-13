@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ums-frontend
+  labels:
+    app: ums-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ums-frontend
+  template:
+    metadata:
+      labels:
+        app: ums-frontend
+    spec:
+      containers:
+      - name: ums-frontend
+        image: ghcr.io/thanatadcs/scalable-p1/ums-frontend:latest
+        ports:
+          - containerPort: 80
