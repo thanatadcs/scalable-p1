@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ums-backend
+  labels:
+    app: ums-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ums-backend
+  template:
+    metadata:
+      labels:
+        app: ums-backend
+    spec:
+      containers:
+      - name: ums-backend
+        image: ghcr.io/thanatadcs/scalable-p1/ums-backend:latest
+        ports:
+          - containerPort: 8080
+        env:
+          - name: UMS_DB_IP
+            value: mariadb.default.svc.cluster.local
+          - name: UMS_DB_NAME
+            value: ums
+          - name: UMS_DB_USERNAME
+            value: dev
+          - name: UMS_DB_PASSWORD
+            value: devpass
+          - name: UMS_REDIS_IP
+            value: redis.default.svc.cluster.local
