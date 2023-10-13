@@ -14,6 +14,10 @@ spec:
       labels:
         app: mariadb
     spec:
+      volumes:
+        - name: pv
+          persistentVolumeClaim:
+            claimName: pvc
       containers:
       - name: mariadb
         image: mariadb:11
@@ -28,3 +32,6 @@ spec:
             value: devpass
           - name: MARIADB_ROOT_PASSWORD
             value: mypass
+        volumeMounts:
+          - mountPath: "/var/lib/mysql"
+            name: pv
