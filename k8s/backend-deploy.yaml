@@ -27,6 +27,9 @@ spec:
           - name: UMS_DB_USERNAME
             value: dev
           - name: UMS_DB_PASSWORD
-            value: devpass
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-password
+                key: mariadb-user-password
           - name: UMS_REDIS_IP
             value: redis.default.svc.cluster.local
