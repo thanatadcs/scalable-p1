@@ -17,6 +17,7 @@ services:
       UMS_DB_USERNAME: dev 
       UMS_DB_PASSWORD: devpass 
       UMS_DB_IP: db
+      UMS_REDIS_IP: redis 
     depends_on:
       - db
       - redis
